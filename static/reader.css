@@ -1,0 +1,17 @@
+
+:root{color-scheme:dark;--bg:#0e0c0c;--ink:#bfb5ad;--soft:#877d77;--red:#cb5456;--line:#2b2424}
+:root[data-theme=paper]{color-scheme:light;--bg:#e9e5de;--ink:#1c1817;--soft:#5f5753;--red:#7a1015;--line:#c9c1b8}
+:root[data-theme=sepia]{color-scheme:light;--bg:#cfc0a4;--ink:#211811;--soft:#564736;--red:#661011;--line:#ab9a7c}
+body{background:var(--bg);color:var(--ink);font:var(--size,20px)/1.72 Alegreya,Georgia,serif;max-width:33em;
+margin:0 auto;padding:2.6em 22px 6em;overflow-wrap:break-word;hyphens:auto;font-kerning:normal;
+text-rendering:optimizeLegibility;hanging-punctuation:first}
+p{margin:0 0 1em}
+a{color:var(--red);text-underline-offset:.18em;text-decoration-thickness:1px}
+img{max-width:100%;height:auto}table{max-width:100%;display:block;overflow-x:auto}pre{white-space:pre-wrap}
+h1,h2,h3,h4{font-family:Title,Alegreya,serif;font-weight:400;line-height:1.2;margin:2em 0 .7em;hyphens:manual;text-wrap:balance}
+h1{font-size:2.1em}h2{font-size:1.6em}h3{font-size:1.3em}h4{font-style:italic}
+h1::after{content:"";display:block;width:3rem;height:1px;margin-top:.7em;background:var(--red)}
+blockquote{margin:1.6em 0;padding-left:1.2em;border-left:1px solid var(--red);font-style:italic}
+hr{border:0;height:1px;width:4rem;background:var(--line);margin:3em auto}
+::selection{background:#6d0f13;color:#f1e9e2}
+.src{font-size:.68em;line-height:1.5;color:var(--soft);border-bottom:1px solid var(--line);padding-bottom:1.2em;margin-bottom:2.4em}

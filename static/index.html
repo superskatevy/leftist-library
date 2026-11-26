@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leftist Library</title>
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%232a070a' d='M0 0h20L12 32H0z'/%3E%3Cpath fill='%23050404' d='M20 0h12v32H12z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts.css">
+<style>
+:root{color-scheme:dark;--bg:#0a0808;--panel:#121010;--ink:#c9bfb7;--soft:#8b817b;--line:#292222;--red:#cb5456;--blood:#6d0f13}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font:18px/1.55 Alegreya,Georgia,serif;min-height:100vh;display:flex;flex-direction:column}
+/* Photocopy grain over the whole page. */
+body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.07;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:var(--red)}
+::selection{background:var(--blood);color:#f1e9e2}
+h1,h2,h3,.initial{font-family:Title,'Times New Roman',serif;font-weight:400}
+
+/* The old red and black diagonal, almost lost in the dark. */
+.masthead{text-align:center;padding:5.5rem 16px 3.6rem;
+background:radial-gradient(120% 100% at 50% 40%,transparent 35%,#000c 100%),linear-gradient(112deg,#2a070a 0 50%,#040303 calc(50% + 1px))}
+.masthead h1{margin:0;text-transform:uppercase;font-size:clamp(2.1rem,7.4vw,5.2rem);line-height:1.15;letter-spacing:.16em;
+padding-left:.16em;color:#d8cec5;text-wrap:balance}
+.masthead h1 a{color:inherit;text-decoration:none}
+.symbols{display:flex;justify-content:center;align-items:center;gap:clamp(2.6rem,11vw,7rem);margin-top:2.8rem;color:#a99f98}
+.symbols svg{width:clamp(2.8rem,6vw,3.7rem);aspect-ratio:1;height:auto}
+.home .masthead h1,.home .symbols,.home .lead{animation:surface 1.6s ease-out both}
+.home .symbols{animation-delay:.35s}
+.home .lead{animation-delay:.7s}
+@keyframes surface{from{opacity:0}}
+.inner .masthead{padding:1.3rem 16px 2.8rem}
+.inner .masthead h1{font-size:1.35rem}
+.inner .symbols{margin-top:.7rem;gap:3rem}
+.inner .symbols svg{width:1.7rem}
+
+.search{position:relative;z-index:6;max-width:40rem;margin:-1.6rem auto 0;width:calc(100% - 38px)}
+input{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid #4a3d3c;border-radius:0;padding:.65rem 1rem}
+.search input{font-size:1.2rem;padding:.9rem 1.2rem;text-align:center}
+input::placeholder{color:var(--soft);font-style:italic}
+input:focus{border-color:var(--red);outline:0}
+button:focus-visible,a:focus-visible{outline:1px solid var(--red);outline-offset:3px}
+#suggest{position:absolute;left:0;right:0;top:100%;margin:0;padding:0;list-style:none;background:var(--panel);
+border:1px solid #4a3d3c;border-top:0;max-height:65vh;overflow:auto;box-shadow:0 30px 60px #000e}
+#suggest li[role=option]{padding:.5rem 1.1rem;cursor:pointer;border-left:2px solid transparent;line-height:1.35}
+#suggest li[role=option]:hover,#suggest li[aria-selected=true]{background:#1d1213;border-left-color:var(--red)}
+.label{padding:.8rem 1.1rem .2rem;font:italic 1rem Title,serif;color:var(--soft)}
+
+main{flex:1;width:100%;max-width:52rem;margin:0 auto;padding:3.6rem 19px 6rem}
+.meta{color:var(--soft);font-size:.9rem}
+h2{font-size:clamp(2rem,5.5vw,3.1rem);line-height:1.15;margin:0 0 .5rem;text-wrap:balance;overflow-wrap:break-word}
+h3{font-size:1.35rem;font-style:italic;margin:0}
+.lead{font:italic 1.2rem/1.6 Title,serif;color:var(--soft);text-align:center;margin:0;text-wrap:balance}
+
+ul.list{list-style:none;padding:0;margin:0}
+ul.list li{border-bottom:1px solid var(--line)}
+ul.list a{display:grid;grid-template-columns:3.4rem 1fr;column-gap:.8rem;padding:.9rem .6rem;text-decoration:none;color:inherit;border-left:2px solid transparent;transition:background .2s,border-color .2s}
+ul.list a:hover{background:#150e0e;border-left-color:var(--red)}
+.year{color:var(--red);font-variant-numeric:tabular-nums;font-size:.95rem;padding-top:.15rem}
+.title{font-size:1.22rem;line-height:1.35}
+
+.meter{height:1px;background:var(--line);margin-top:.5rem}.meter span{display:block;height:100%;background:var(--red)}
+
+.home main{display:flex;flex-direction:column;padding-top:2.2rem;padding-bottom:2.2rem}
+.home footer{display:none}
+.collections{margin-top:auto;padding-top:4rem}
+@media(max-height:780px){.home .masthead{padding-top:2.6rem;padding-bottom:2.8rem}.home .symbols{margin-top:1.5rem}.home main{padding-top:1.5rem;padding-bottom:1.2rem}.home .collections{padding-top:1.8rem}}
+.shelves{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));column-gap:3rem;border-top:1px solid var(--line)}
+.collection{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;padding-top:1.5rem}
+.collection h4{font:400 1.3rem Title,serif;margin:0}
+progress{width:100%;max-width:18rem;height:2px;appearance:none;border:0;background:var(--line)}
+progress::-webkit-progress-bar{background:var(--line)}progress::-webkit-progress-value{background:var(--red)}progress::-moz-progress-bar{background:var(--red)}
+footer{border-top:1px solid var(--line);color:var(--soft);text-align:center;padding:2rem 19px 2.6rem;font-size:.85rem}
+footer p{max-width:38rem;margin:0 auto}
+.inner.reading footer{display:none}
+
+.mark{display:inline-block;width:.5em;height:.5em;background:var(--blood);margin-right:.5em;vertical-align:.1em}
+.mark.tal{background:transparent;box-shadow:inset 0 0 0 1px var(--soft)}
+.tools{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-top:1.8rem}
+.tools input{flex:1 1 15rem;width:auto}
+.initial{font-size:1.5rem;font-style:italic;color:var(--soft);margin:2.4rem 0 .4rem;padding-bottom:.3rem;border-bottom:1px solid #4a3d3c}
+button,.btn{font:inherit;font-size:.9rem;line-height:1.5;background:transparent;color:var(--ink);border:1px solid #4a3d3c;border-radius:0;padding:.3rem .85rem;cursor:pointer;text-decoration:none}
+button:hover,.btn:hover{border-color:var(--red);color:#e5dbd2}
+button[aria-pressed=true]{background:var(--blood);border-color:var(--blood);color:#eee3da}
+.group{display:inline-flex}.group button{margin-left:-1px}.group button:first-child{margin-left:0}
+.bar{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;margin:1rem 0}
+.reader{display:flex;flex-direction:column;background:var(--bg)}
+.reader .meter{margin:0}
+iframe{display:block;width:100%;height:84vh;background:#0e0c0c;border:1px solid var(--line);border-top:0}
+.inner.reading main{max-width:62rem;padding-top:2.6rem}
+.reader:fullscreen{padding:0 12px}.reader:fullscreen iframe{flex:1;height:auto}
+.warn{color:var(--red)}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Hammer and sickle -->
+  <symbol id="communist" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M43 5C72 6 93 26 93 51c0 24-18 40-42 40-11 0-20-3-27-9l8-9c5 4 11 6 19 6 17 0 29-13 29-31C79 31 66 15 43 5z"/>
+    <path stroke="currentColor" stroke-width="11" stroke-linecap="round" d="M28 78 12 93"/>
+    <path stroke="currentColor" stroke-width="10" stroke-linecap="round" d="M34 35 85 87"/>
+    <path fill="currentColor" d="m10 33 23-23 13 4 3 5-26 27z"/>
+  </symbol>
+  <!-- Anarcho-communist: the sickle closes the circle around the A, with a hammer as its crossbar -->
+  <symbol id="ancom" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M42 4c31-2 54 19 54 47 0 26-20 44-46 44-12 0-23-4-31-11l7-8c6 6 14 9 24 9 20 0 35-14 35-34C85 29 68 11 42 4z"/>
+    <path stroke="currentColor" stroke-width="10" stroke-linecap="round" d="M22 81 9 94"/>
+    <path fill="none" stroke="currentColor" stroke-width="8.5" d="M29 82 52 14l23 68"/>
+    <path stroke="currentColor" stroke-width="8" d="M14 58h69"/>
+    <path fill="currentColor" d="m3 49 7-7h10v32H3z"/>
+  </symbol>
+  <!-- Circle-A -->
+  <symbol id="anarchist" viewBox="0 0 100 100">
+    <circle cx="50" cy="52" r="39" fill="none" stroke="currentColor" stroke-width="9"/>
+    <path fill="none" stroke="currentColor" stroke-width="9" stroke-miterlimit="8" d="M21 96 51 8l27 88"/>
+    <path stroke="currentColor" stroke-width="8" d="M9 63h82"/>
+  </symbol>
+</svg>
+<header class="masthead">
+  <h1><a href="#/">Leftist Library</a></h1>
+  <div class="symbols">
+    <svg role="img" aria-label="Hammer and sickle"><use href="#communist"/></svg>
+    <svg role="img" aria-label="Anarcho-communist symbol"><use href="#ancom"/></svg>
+    <svg role="img" aria-label="Anarchist circle-A"><use href="#anarchist"/></svg>
+  </div>
+</header>
+<div class="search" role="search">
+  <input id="q" type="search" placeholder="Search an author or a title" autocomplete="off"
+    role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list" aria-label="Search an author or a title">
+  <ul id="suggest" role="listbox" hidden></ul>
+</div>
+<main id="main" aria-live="polite"></main>
+<footer><p>Texts remain on their source sites. Check each text’s rights notice before republishing it.</p></footer>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const input = $("#q"), box = $("#suggest"), main = $("#main");
+const SOURCES = {mia: "marxists.org", tal: "The Anarchist Library"};
+let options = [], active = -1, typing = 0, view = 0, statusTimer = 0;
+
+// Text is always inserted as text, never as HTML.
+function el(tag, props = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(props)) {
+    if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else node.setAttribute(key, value);
+  }
+  node.append(...children.filter(c => c !== null && c !== ""));
+  return node;
+}
+async function api(path) {
+  const response = await fetch(path);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Request failed");
+  return data;
+}
+const plural = n => n + (n === 1 ? " text" : " texts");
+
+function closeSuggestions() {
+  typing++; box.hidden = true; options = []; active = -1;
+  input.setAttribute("aria-expanded", "false");
+  input.removeAttribute("aria-activedescendant");
+}
+function go(hash) { closeSuggestions(); location.hash = hash; }
+
+input.addEventListener("input", async () => {
+  const ticket = ++typing, q = input.value.trim();
+  if (!q) return closeSuggestions();
+  let data;
+  try { data = await api("/api/search?q=" + encodeURIComponent(q)); } catch { return; }
+  if (ticket !== typing) return;            // a newer keystroke has taken over
+  box.replaceChildren(); options = []; active = -1;
+  const add = (hash, main_, sub) => {
+    const item = el("li", {role: "option", id: "opt" + options.length, "aria-selected": "false",
+      onmousedown: e => { e.preventDefault(); go(hash); }}, el("div", {}, main_), el("div", {class: "meta"}, sub));
+    options.push({item, hash}); box.append(item);
+  };
+  if (data.authors.length) box.append(el("li", {class: "label", role: "presentation"}, "Authors"));
+  for (const a of data.authors) add("#/author/" + a.id, a.name, a.count ? plural(a.count) : "Open to load texts");
+  if (data.works.length) box.append(el("li", {class: "label", role: "presentation"}, "Texts"));
+  for (const w of data.works) add("#/work/" + w.id, w.title, [w.byline, w.year, SOURCES[w.source]].filter(Boolean).join(", "));
+  if (!options.length) box.append(el("li", {class: "label", role: "presentation"}, "No matches yet"));
+  box.hidden = false; input.setAttribute("aria-expanded", "true");
+});
+input.addEventListener("keydown", e => {
+  if ((e.key === "ArrowDown" || e.key === "ArrowUp") && options.length) {
+    e.preventDefault();
+    const step = e.key === "ArrowDown" ? 1 : -1;
+    active = active < 0 ? (step > 0 ? 0 : options.length - 1) : (active + step + options.length) % options.length;
+    options.forEach((o, i) => o.item.setAttribute("aria-selected", String(i === active)));
+    options[active].item.scrollIntoView({block: "nearest"});
+    input.setAttribute("aria-activedescendant", "opt" + active);
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (active >= 0) go(options[active].hash);
+    else if (input.value.trim()) go("#/search/" + encodeURIComponent(input.value.trim()));
+  } else if (e.key === "Escape") { e.preventDefault(); closeSuggestions(); }
+});
+input.addEventListener("blur", closeSuggestions);
+
+const mark = key => el("span", {class: "mark " + key, "aria-hidden": "true"});
+// Small conveniences kept in this browser only.
+const store = {
+  get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
+  set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} },
+};
+let cleanups = [];
+
+function workList(works) {
+  let timer = 0;
+  return el("ul", {class: "list"}, ...works.map(w => el("li", {}, el("a", {href: "#/work/" + w.id,
+    // Resting the pointer on a text loads it early, so the click opens faster.
+    onmouseenter: () => { timer = setTimeout(() => fetch("/prefetch/" + w.id), 350); },
+    onmouseleave: () => clearTimeout(timer)},
+    el("span", {class: "year"}, w.year),
+    el("div", {}, el("div", {class: "title"}, w.title),
+      el("div", {class: "meta"}, w.byline),
+      el("div", {class: "meta"}, mark(w.source), SOURCES[w.source]))))));
+}
+const meter = fraction => el("div", {class: "meter"}, el("span", {style: "width:" + Math.round(fraction * 100) + "%"}));
+async function home(ticket) {
+  const shelves = el("div", {class: "shelves"});
+
+  async function refresh() {
+    const data = await api("/api/status");
+    if (ticket !== view) return;
+    shelves.replaceChildren(...Object.entries(SOURCES).map(([key, name]) => {
+      const s = data.sources[key], step = /(\d+) of (\d+)/.exec(s.message);
+      return el("div", {class: "collection"},
+        el("div", {}, el("h4", {}, mark(key), name),
+          el("div", {class: "meta"}, plural(data.counts[key]) + ". " + s.message),
+          s.last_error ? el("div", {class: "meta warn"}, "Last problem: " + s.last_error) : null),
+        s.running ? null : el("button", {onclick: async () => {
+          clearTimeout(statusTimer);
+          await fetch("/api/import/" + key, {method: "POST", headers: {"X-BookSearch": "1"}});
+          refresh();
+        }}, "Update catalogue"),
+        s.running && step ? el("progress", {value: step[1], max: step[2], "aria-label": "Catalogue progress"}) : null);
+    }));
+    clearTimeout(statusTimer);
+    if (Object.values(data.sources).some(s => s.running))
+      statusTimer = setTimeout(() => ticket === view && refresh().catch(() => {}), 2500);
+  }
+
+  main.replaceChildren(el("p", {class: "lead"}, "Search anarchist and Marxist writing by author name or text title."),
+    el("section", {class: "collections", "aria-label": "Collections"}, shelves));
+  await refresh();
+}
+
+async function authorPage(id, ticket) {
+  main.replaceChildren(el("p", {class: "meta"}, "Loading…"));
+  const a = await api("/api/author/" + id);
+  if (ticket !== view) return;
+  const holder = el("div"), count = el("p", {class: "meta"});
+  const filter = el("input", {type: "search", placeholder: "Filter these texts", "aria-label": "Filter these texts"});
+  const fold = s => s.normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase();
+  let order = "title";
+  const orders = [["title", "By title"], ["year", "By year"]].map(([key, label]) =>
+    el("button", {"data-key": key, onclick: () => { order = key; draw(); }}, label));
+  function draw() {
+    orders.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.key === order)));
+    const f = fold(filter.value);
+    const list = a.works.filter(w => fold(w.title + " " + w.year).includes(f));
+    if (order === "year") list.sort((x, y) => (x.year || "9999").localeCompare(y.year || "9999"));
+    const groups = new Map();
+    for (const w of list) {
+      const first = (fold(w.title).match(/[\p{L}\p{N}]/u) || ["#"])[0];
+      const key = order === "year" ? (w.year || "Undated") : /\p{N}/u.test(first) ? "0–9" : first.toUpperCase();
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(w);
+    }
+    count.textContent = plural(list.length);
+    holder.replaceChildren(...[...groups].flatMap(([key, works]) => [el("div", {class: "initial"}, key), workList(works)]));
+  }
+  filter.addEventListener("input", draw); draw();
+  const from = Object.entries(SOURCES).map(([key, name]) => [a.works.filter(w => w.source === key).length, name])
+    .filter(([n]) => n).map(([n, name]) => n + " from " + name).join(", ");
+  main.replaceChildren(el("h2", {}, a.name), el("div", {class: "meta"}, from),
+    a.warning ? el("p", {class: "warn"}, a.warning) : "",
+    el("div", {class: "tools"}, filter, el("div", {class: "group", role: "group", "aria-label": "Order"}, ...orders)), count, holder);
+}
+
+async function workPage(id, ticket) {
+  const w = await api("/api/work/" + id);
+  if (ticket !== view) return;
+  document.body.classList.add("reading");
+  const settings = store.get("ll-reading", {theme: "night", size: 20});
+  if (!settings.theme) settings.theme = "night";
+  const holder = el("div"), progress = meter(0), bar = el("div", {class: "bar"});
+  let frame = null, tracker = 0;
+  const modes = [];
+  if (w.has_html) modes.push(["html", "Web page"]);
+  if (w.pdf_url) modes.push(["pdf", "PDF"]);
+  if (w.has_html) modes.push(["txt", "Plain text"]);
+  const buttons = modes.map(([mode, label]) => el("button", {onclick: () => show(mode)}, label));
+
+  function apply() {
+    try {
+      const root = frame.contentDocument.documentElement;
+      root.dataset.theme = settings.theme;
+      root.style.setProperty("--size", settings.size + "px");
+    } catch {}
+    themes.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === settings.theme)));
+    store.set("ll-reading", settings);
+  }
+  const themes = [["night", "Night"], ["sepia", "Sepia"], ["paper", "Paper"]].map(([key, label]) =>
+    el("button", {"data-t": key, onclick: () => { settings.theme = key; apply(); }}, label));
+  const resize = step => { settings.size = Math.min(30, Math.max(15, settings.size + step)); apply(); };
+  const controls = el("div", {class: "bar", style: "margin:0"}, el("div", {class: "group"}, ...themes),
+    el("div", {class: "group"}, el("button", {"aria-label": "Smaller text", onclick: () => resize(-1)}, "A−"),
+      el("button", {"aria-label": "Larger text", onclick: () => resize(1)}, "A+")));
+
+  // Remembers how far down each page was read, and moves the progress bar.
+  function follow() {
+    clearInterval(tracker);
+    let win, key;
+    try { win = frame.contentWindow; key = win.location.pathname + win.location.search; apply(); } catch { return; }
+    const page = frame.contentDocument, root = page.scrollingElement;
+    const current = frame;
+    page.fonts.ready.then(() => {
+      if (frame !== current || ticket !== view) return;
+      const saved = store.get("ll-places", {})[key] || 0;
+      if (saved > 0.01 && !win.location.hash) win.scrollTo(0, saved * (root.scrollHeight - win.innerHeight));
+      clearInterval(tracker);
+      tracker = setInterval(() => {
+        const room = root.scrollHeight - win.innerHeight;
+        const done = room > 0 ? Math.min(1, win.scrollY / room) : 0;
+        progress.firstChild.style.width = (done * 100) + "%";
+        const places = store.get("ll-places", {});
+        if (Math.abs((places[key] || 0) - done) > 0.005) { places[key] = done; store.set("ll-places", places); }
+      }, 400);
+    });
+  }
+  cleanups.push(() => clearInterval(tracker));
+
+  function show(mode) {
+    clearInterval(tracker);
+    buttons.forEach((b, i) => b.setAttribute("aria-pressed", String(modes[i][0] === mode)));
+    // Chrome's PDF viewer does not run inside a sandboxed frame.
+    const props = {src: "/" + mode + "/" + w.id, title: w.title};
+    if (mode !== "pdf") props.sandbox = "allow-same-origin allow-popups allow-popups-to-escape-sandbox";
+    if (mode === "html") props.onload = follow;
+    if (mode === "txt") props.onload = () => {
+      try { frame.contentDocument.documentElement.style.cssText = "color-scheme:dark;background:#0e0c0c;color:#bfb5ad;padding:1rem"; } catch {}
+    };
+    controls.hidden = progress.hidden = mode !== "html";
+    frame = el("iframe", props);
+    holder.replaceChildren(frame);
+    open.href = "/" + mode + "/" + w.id;
+  }
+  const open = el("a", {class: "btn", target: "_blank", rel: "noopener"}, "Open in new tab");
+  const reader = el("div", {class: "reader"}, bar, progress, holder);
+  const full = el("button", {onclick: () => document.fullscreenElement ? document.exitFullscreen() : reader.requestFullscreen()}, "Full screen");
+  bar.append(el("div", {class: "group"}, ...buttons), controls, full, open,
+    el("a", {class: "btn", href: w.url, target: "_blank", rel: "noopener noreferrer"}, "Source site"));
+  const authors = w.authors.flatMap((a, i) => [i ? ", " : "", el("a", {href: "#/author/" + a.id}, a.name)]);
+  main.replaceChildren(el("h2", {}, w.title),
+    el("div", {class: "meta"}, ...(authors.length ? authors : [w.byline]), w.year ? ", " + w.year : ""),
+    el("div", {class: "meta"}, mark(w.source), SOURCES[w.source]), reader);
+  show(modes[0][0]);
+}
+
+async function results(q, ticket) {
+  const data = await api("/api/search?all=1&q=" + encodeURIComponent(q));
+  if (ticket !== view) return;
+  main.replaceChildren(el("h2", {}, "Results for “" + q + "”"),
+    data.authors.length ? el("ul", {class: "list"}, ...data.authors.map(a => el("li", {}, el("a", {href: "#/author/" + a.id},
+      el("span", {class: "year"}), el("div", {}, el("div", {class: "title"}, a.name), el("div", {class: "meta"}, "Author")))))) : "",
+    data.works.length ? workList(data.works) : "",
+    data.authors.length || data.works.length ? "" : el("p", {}, "Nothing found. The catalogue may still be building."));
+}
+
+async function route() {
+  const ticket = ++view;
+  clearTimeout(statusTimer);
+  const [, page, arg] = location.hash.split("/");
+  const inner = ["author", "work", "search"].includes(page);
+  document.body.className = inner ? "inner" : "home";
+  cleanups.forEach(stop => stop()); cleanups = [];
+  scrollTo(0, 0);
+  try {
+    if (page === "author") await authorPage(arg, ticket);
+    else if (page === "work") await workPage(arg, ticket);
+    else if (page === "search") { const q = decodeURIComponent(arg); input.value = q; await results(q, ticket); }
+    else await home(ticket);
+  } catch (error) {
+    if (ticket === view) main.replaceChildren(el("p", {class: "warn"}, error.message));
+  }
+}
+addEventListener("hashchange", () => route());
+route();
+</script>
+</body>
+</html>
